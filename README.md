@@ -1,5 +1,5 @@
 # daa-assignments
-Contains my assignment submissions for the course Design and Analysis of Algorithms
+Contains my assignment submissions for the course Design and Analysis of Algorithms.
 Some questions also contain code
 
 Topics Covered :
