@@ -1,0 +1,202 @@
+\documentclass[14pt]{article}
+\usepackage{fullpage,enumitem,amsmath,amssymb,titlesec, xcolor}
+\titleformat*{\section}{\Large\bfseries\color{blue}\filcenter}
+\titlespacing*{\subsection}{-1em}{*2}{*0}
+\titleformat*{\subsection}{\bfseries}
+\usepackage{indentfirst}
+\setlength\parindent{24pt}
+
+\begin{document}
+
+	\title{\color{blue}\Huge \textbf{Quiz1}} 
+	\date{\Large Design and Analysis of Algorithms}
+	\author{Rachit Parikh (CRS-2101) -- \texttt{rachitparikh2016@gmail.com}}
+	
+	\maketitle
+	\textbf{Disclaimer : }I declare that all the work presented in this assignment is my own work and I have only consulted the internet when it was absolutely necessary. I have only used Vizing's theorem result directly, since we were taught that in our Discrete Mathematics course last semester. 
+	
+	\noindent
+	\rule{\linewidth}{0.4pt}
+	
+	\section*{\underline{Q-1}}
+		\noindent
+		\subsection*{(a)}
+				\begin{flalign*}
+					T(n) &= T(n-1) + n &\\
+					&= T(n-2) + n-1 + n &\\
+					&= T(1) + 2 + 3 + \dots + n &
+				\end{flalign*}
+			$\therefore T(n) = \dfrac{n(n-1)}{2} = O(n^{2})$\\
+			
+		\subsection*{(b)}
+ 			\begin{flalign*}
+				T(n) &= T \left(\frac{n}{2}\right) + O(n) &\\
+				&= T\left(\frac{n}{4}\right) + O\left(\frac{n}{2}\right) + O(n) &\\
+				&= c + O(n) + O\left(\frac{n}{2}\right) + \dots + O(1) -- \log_{2}n \text{ terms} &\\
+			\end{flalign*} 
+			By definition of $O(n)$, if $h(n) \leq M.g(n) \implies h(n) = O(g(n)) \\$
+			In our case $g(n) = n$ and $O(n) = h(n) \implies h(n) \leq M.n$\\
+			\begin{flalign*}
+				\therefore T(n) &= c + h(n) + h\left(\frac{n}{2}\right) + \dots + h(1) &\\
+				&\leq c + Mn + M\frac{n}{2} + \dots + M &\\
+				&\leq q + qn + q\frac{n}{2} + \dots + q &\\
+				&\leq q\left[1 + \left(\frac{\left(\frac{1}{2}\right)^{\log_{2}(n) - 1} - 1}{\left(\frac{1}{2}\right)-1}\right)\right] &\\
+				&\leq q(3n - 4) &\\
+				&\leq dn, \text{ for some } d \in \mathbb{R}
+ 			\end{flalign*}
+ 		$\implies T(n) = O(n)$\\
+ 		
+		\subsection*{(c)}
+		\noindent
+		\linebreak
+		We know that,
+			\[ \left\lfloor\frac{x}{2}\right\rfloor = \begin{cases}
+				\frac{x}{2} & \text{if } 2 \mid x\\
+				\frac{x-1}{2} & \text{otherwise}
+			\end{cases} 
+			\]
+			Similarly,
+			\[ \left\lfloor\frac{\left\lfloor\frac{x}{2}\right\rfloor}{2}\right\rfloor = \begin{cases}
+				\frac{x}{4} & \text{if } 4 \mid x\\
+				\frac{x-1}{4} & \text{if } 2 |\frac{x-1}{2}, 2 \nmid \left\lfloor\frac{x}{2}\right\rfloor \\
+				\frac{x-2}{4} & \text{if } 2 | \left\lfloor\frac{x}{2}\right\rfloor, 2 \nmid \frac{x}{2}\\
+				\frac{x-3}{4} & \text{if } 2 \nmid \left\lfloor\frac{x}{2}\right\rfloor, 2 \nmid \frac{x-1}{2}
+			\end{cases} 
+			\]
+			Let,
+			$$b_{n-1} = \left\lfloor\frac{b_{n}}{2}\right\rfloor$$
+			with,
+			$$b_n = n$$
+			Then we know that 
+			$$b_{n-k} \leq \frac{n}{2^{k}}$$
+			Coming back to our recursion,
+			\begin{flalign*}
+				T(n) &= 2T\left(\left\lfloor\frac{n}{2}\right\rfloor\right) + n &\\
+				&= 2T(b_{n-1}) + n &\\
+				&= 2^{2}T(b_{n-2}) + 2b_{n-1} + b_n &\\
+				&= 2^{k}T(b_{n-k}) + 2^{k-1}b_{n-k+1} + \dots + b_n &\\ 
+			\end{flalign*}
+			At, $k = \log_{2}\left(n\right)$, 
+			\begin{flalign*}
+				T(n) &= 2^{\log_{2}\left(n\right)}.T\left(b_{n-\log_{2}\left(n\right)}\right) + \sum_{i=0}^{k}2^{i}b_{n-i} &\\
+				&\leq nT\left(b_{n-\log_{2}\left(n\right)}\right) + \sum_{i=0}^{k}2^{i}\frac{n}{2^{i}} &\\
+				&\leq nT(1) + n\log_{2}n &\\
+				&\leq Mn\log_{2}n
+ 			\end{flalign*}
+ 		Thus, $$T(n) = O(n\log_{2}n)$$
+		
+	\vspace{2cm}
+	\hrule
+	\vspace{0.5cm}
+		
+	\section*{\underline{Q-2}}
+		\noindent
+		\linebreak
+		Let, $a_n = x$, then for the equation $a_n = a_{n-1} + a_{n-2}$, we have
+		\begin{flalign*}
+			&x^{2} = x + 1 &\\
+			&x^{2} - x - 1 = 0 &\\
+			&\implies x = \left(\frac{1 \pm \sqrt{5}}{2}\right) &
+		\end{flalign*}
+		Let,
+		\begin{flalign*}
+			&p = \frac{1+\sqrt{5}}{2} & &q = \frac{1-\sqrt{5}}{2} &\\
+			&\therefore q = 1-p &\\
+		\end{flalign*}
+		Now, our solution for $a_n$ would be linear combination of both the solutions,
+		Hence, $a_n = sp^{n} + tq^{n}$\\
+		By, the initial conditions, $a_1 = 1, a_2 = 3$,\\
+		\begin{flalign*}
+			&1 = sp + qt & & 3 = sp^{2} + tq^{2} &\\
+			&1 = s\left(\frac{1+\sqrt{5}}{2}\right) + t\left(\frac{1-\sqrt{5}}{2}\right) && 3 = s\left(\frac{1+\sqrt{5}}{2}\right)^{2} + t\left(\frac{1-\sqrt{5}}{2}\right)^{2} &\\
+			&1 = \frac{s+t}{2} + \sqrt{5}\left(\frac{s-t}{2}\right) & & 3 = \frac{3}{2}(s+t) + \frac{\sqrt{5}}{2}(s-t) &\\
+		\end{flalign*}
+		By solving the above system of equations we get,
+		$$ s = t = 1 $$ \\
+		Hence, the closed form for  $a_n$ is 
+		$$a_n = \left(\frac{1+\sqrt{5}}{2}\right)^{n} + \left(\frac{1-\sqrt{5}}{2}\right)^{n}$$ \\
+		\noindent
+		Now, we will try to find the $O(n)$ notation for $a_n$
+		\begin{flalign*}
+			&a_n = p^{n} + q^{n}&\\
+			&p = \frac{1+\sqrt{5}}{2} = 1.62 \implies q = 0.62&\\
+			&\therefore a_n = 1.62^{n} + (-0.62)^{n}&\\				
+		\end{flalign*}
+		For large n, we have $q^n \approx 0$, hence we can assume $a_n \approx 1.62^n$
+		\begin{flalign*}
+			&\exists N, \forall n \geq N, &\\
+			&a_n \approx 1.62^n \leq 1.75^n&\\
+			&\implies a_n = O(1.75^n)&
+		\end{flalign*}
+	
+	\vspace{2cm}
+	\hrule
+	\vspace{0.5cm}
+		
+	\section*{\underline{Q-3}}
+		\noindent
+		\linebreak
+		Here, we will try to remove cycles from a graph $G$ and prove that for a graph with even degree we can write the graph $G$ as a union of disjoint edge cycles. \\
+		\linebreak
+		If there is no cycle in $G = (V, E)$, then there must be some vertex with degree $1$, hence it is odd. Take a path $P = (ue_{1}v_{1}....e_{k}v_{k})$, then the vertex $u$ has degree 1, unless some $v_{k'}, k'>2$ connects with $u$. If there exists a cycle $C_1$ in this graph then if we remove it from the graph, the degrees of all the vertices in $C_1$ would not change their parity. Let $d$ be the degree of a vertex $u$ in $G$, and $d'$ be the degree of $u$ in $G-C_1$, then $d' = d - 2k$ for some $k$. In other words, $2 | d-d'$, thus we have parity of degree of vertices as an invariant property. If we keep continuing this process, ultimately we would have 0 edges in case of a graph where all the vertices have an even degree. This would lead to a graph without any edges which will make our statement vacuously true since there are no cycles here. Thus,
+		$$ G = C_1 \cup C_2 \cup \dots \cup C_t $$ for some t.   
+	
+	\vspace{2cm}
+	\hrule
+	\vspace{0.5cm}
+	
+	\section*{\underline{Q-4}}
+		\noindent
+		\linebreak
+		First, let us define some properties of siblings. If $A$ and $B$ are siblings, $B$ and $C$ are siblings, then by definition $A$ and $C$ are also siblings. Hence it is a transitive property. \\
+		\linebreak
+		Construct a graph $G$ such that people are vertices and there is an edge connecting them if and only if they are siblings. So if there are edges $(u, v)$ and $(v, w)$, then there is also an edge $(u, w)$. Hence, if we construct a graph $G$, then all of its components are complete, since for any component every vertex will be connected to each other. So if there are n siblings in a component then they form $K_n$. Hence, in $K_n$ for every vertex $u$ we have $deg(u) = n-1$. Then if $n-1$ is odd then $n$ is even. If $u$ has odd number of siblings ( $2 \nmid deg(u)$ ), then $2 | n$. Thus, number of people with odd number of siblings is even.
+	
+	\vspace{2cm}
+	\hrule
+	\vspace{0.5cm}
+	
+	\section*{\underline{Q-5}}
+		\noindent
+		\linebreak
+		\textbf{Claim : }Any spanning tree $T$ of graph $G$ can be transformed into another spanning tree $T'$ of graph $G$ with finite number of operations.\\
+		\linebreak
+		Consider the case when there is 1 ucommon edge in both $T(V, E)$ and $T'(V, E')$. Let $e \notin E', e' \notin E$, if we want to transform $T$ to $T'$, we can do so by adding the edge $e'\in E'$ to $E$. Now, we would have a cycle as a spanning tree is maximally acyclic. So T will now become $T(V, E \cup \{e'\})$. Now if we remove $e$ from $E$, we will again get a spanning tree which is none other than $T'$. This is easy to show as $E' = (E \cup \{e'\}) - \{e\}$. Hence, we can transform one tree to another by doing this operation of adding and removing edge $e \in (E - E') \cup (E' - E)$. Here we can see that in $G'$ there is an edge between $T$ and $T'$, if we can use this operation.\\
+		\linebreak
+		Now, assume that there are $k$ edges in $T(V, E)$, which are not present in $T'(V, E')$. Let, $D = E-E'$ and $D' = E'-E$. If we remove one edge from $D$ it will make our tree disconnected and we would have two components, since a spanning tree is maximally acyclical. There has to be at least one edge in $D'$ such that on adding it to the currently disconnected graph, it won't create any cycle. To show this, consider $W$ and $U$ be the vertices set of these components. If there does not exist any edge which can connect the components between $U$ and $W$ in $D'$, then $T'$ would be disconnected, hence a contradiction. Thus, there exists at least one edge in $D'$ such that on adding it to the disconnected graph we can connect it and transform it into another tree $T_1$. Now we have $k-1$ edges in $T_1(V, E_1)$, which are not present in $T'(V, E')$. By induction we can assume the claim to be true for $k-1$ edges. Hence, we can see that any spanning tree $T$ can be transformed into another tree $T'$ with finite number of operations.\\
+		\linebreak
+		Since, each operation replace exactly one edge, the trees formed after immediate transformation are neighbors. Thus if we have $k$ uncommon edges between $T$ and $T'$, then the transformation $T \rightarrow T_1 \dots \rightarrow T'$, then $(T, T_1), (T_1, T_2), \dots (T_q, T')$ are neighbors. Which means $(T, T_1), (T_1, T_2), \dots (T_q, T')$ are edges in $G'(V', E')$. Since any tree can be transformed to another, there exists a path from one tree to another which means $G'$ is connected.
+ 		
+	\vspace{2cm}
+	\hrule
+	\vspace{0.5cm}
+	
+	\section*{\underline{Q-6}}
+		\noindent
+		\linebreak
+		By handshake lemma, $\sum_{u \in V}^{} deg(u) = 2| E |$
+		$\implies 10(2n) = 2| E |$ \space $\implies | E | = 10n$, thus 
+		number of edges = $10n$\\
+		\linebreak
+		Let $L$ and $R$ be two set of vertices which form the bipartite graph $G$, such that $L \cup R = V$ and $L \cap R = \phi$ then then number of edges $= 10| L | = 10n \space \implies | L | = n \space \implies | R | = n$\\
+		\linebreak
+		Since we have $| L | = | R |$, we just need to prove that $| N(W) | \geq | W |$ where $W \subseteq L$, because it follows from Hall's marriage theorem that G would have a perfect matching if both of the above conditions hold. If $| W | < 10$, then it is already true, since each vertex has degree 10, $\implies | N(W)| > 10$. For $| W | \geq 10$, assume that $| N(W) | < 10$ then by pigeon hole principle, we would have at least one vertex in $N(W), v$ such that $| N(v) |>10$, $\implies deg(v) > 10$, hence a contradiction. Thus, we have $| N(W) | \geq | W |$. This completes the proof.\\
+		
+	\vspace{2cm}
+	\hrule
+	\vspace{0.5cm}
+	
+	\section*{\underline{Q-7}}
+		\noindent
+		\linebreak
+		By Vizing's theorem, $\chi(G) = \Delta + 1$ or $\chi(G) = \Delta$, where $\Delta = $ maximum degree in the graph G, and $\chi(G) = $ minimum $t$ for which the graph is $t-$colorable. Let, the independent sets for our graph $G$ be $V_1, V_2, \dots ,V_k$ then we have $k$ independent sets. Also, $|V_1| + \dots + |V_k| = n$. Now, we know that no two vertices in an independent set are connected, which means that they can be colored using the same color. Let us color $V_i$ with the color $c_i$ then we have total of $k$ colors used to color the graph. But by Vizing's theorem, we know that $k=\Delta + 1$ or $k = \Delta$. Thus, we have,
+		$$|V_1| + \dots + |V_{\Delta + 1}| = n$$ or,
+		Hence by pigeonhole principle we have, at least one $V_i$ such that $|V_i| \geq \frac{n}{\Delta}$
+		$$|V_1| + \dots + |V_{\Delta}| = n$$ 
+		Here, we have at least one $V_i$ such that $|V_i| \geq \left(\frac{n}{\Delta + 1}\right)$\\
+		Also we know that,
+		$$\frac{n}{\Delta} > \frac{n}{\Delta + 1},$$
+		$$d \geq \Delta$$
+		Hence, there exists and independent set of size at least $\frac{n}{d+1}$
+	
+\end{document}
